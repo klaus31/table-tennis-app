@@ -1,54 +1,68 @@
 package tt.examples;
 
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.junit.Test;
 
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
 import static javax.sound.sampled.AudioFormat.Encoding.PCM_SIGNED;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 public abstract class ExampleTest {
 
-  private AudioInputStream stream = null;
+  private int silentPeaks = 0;
 
   @Test
-  public void assertExampleFileIsCorrect() throws Exception {
-    final AudioInputStream audioInputStream = getAudioInputStream();
-    assertNotNull(audioInputStream);
-    assertEquals(PCM_SIGNED, audioInputStream.getFormat().getEncoding());
+  public void assertExampleFileIsCorrect() {
+    final AudioFormat format = getAudioFormat();
+    assertNotNull(format);
+    assertEquals(PCM_SIGNED, format.getEncoding());
   }
 
-  // XXX are this really the amplitudes?!
-  List<Byte> getAmplitudes() throws Exception {
-    final AudioInputStream audioInputStream = getAudioInputStream();
-    final List<Byte> amplitutes = new ArrayList<>();
-    int sampleSize = audioInputStream.getFormat().getSampleSizeInBits();
-    byte[] b = new byte[sampleSize];
-    long framelength = audioInputStream.getFrameLength();
-    int i = 0;
-    for (i = 0; i <= framelength; i++) {
-      while (audioInputStream.read(b) != -1) {
-        amplitutes.add(b[i]);
+  boolean endOfExampleReached(final SamplesAnalysis analysis) {
+    if (analysis.getRms() < 0.01) {
+      if (silentPeaks > 100) {
+        return true;
       }
+      silentPeaks++;
+    } else {
+      silentPeaks = 0;
     }
-    return amplitutes;
+    return false;
   }
 
-  AudioInputStream getAudioInputStream() throws Exception {
-    // XXX not thread safe
-    if (stream == null) {
-      final InputStream istream = ExampleTest.class.getResourceAsStream(getTestFileName());
-      stream = AudioSystem.getAudioInputStream(istream);
+  AudioFormat getAudioFormat() {
+    try {
+      return AudioSystem.getAudioFileFormat(getInputStream()).getFormat();
+    } catch (UnsupportedAudioFileException | IOException e) {
+      e.printStackTrace();
+      fail("Have an exeption");
+      return null;
     }
-    return stream;
+  }
+
+  private InputStream getInputStream() {
+    return ExampleTest.class.getResourceAsStream(getTestFileName());
   }
 
   abstract String getTestFileName();
+
+  void play() {
+    try {
+      AudioStream audioStream = new AudioStream(getInputStream());
+      AudioPlayer.player.start(audioStream);
+    } catch (IOException e) {
+      e.printStackTrace();
+      fail("Have an exeption");
+    }
+  }
 }
