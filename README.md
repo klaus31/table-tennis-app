@@ -48,11 +48,11 @@ OS question: It is far away to get the software on a phone. But since it is writ
 
 ### The requirements of the table? 
 
-I do not know yet. But the more the sound of the ball touching a side differ from the other side, the better it will work.
+I do not know yet. But the more the sound of the ball touching a side differs from the sound on the other side, the better it will work.
 
 ### The requirements of the ball? 
 
-Nothing special. But the app will may get trouble when changing the ball (we will see).
+Nothing special. But the app may get in trouble when changing the ball (we will see).
 
 ### The requirements of the bats? 
 
@@ -63,3 +63,6 @@ Hopefully nothing special. But like the table, different sounds may get helpful.
 You won't play your match outside on a rainy and stormy day, will you?
 
 But even on a sunny day the app will may get problems with a breeze on the mic (we will find out as well).
+
+First development step is a prototype for indoor tables.
+
