@@ -36,11 +36,15 @@ How often you will have to do that? I do not know yet - let's find out!
 
 ## System requirements
 
+I do not know the requirements yet. But here are some thoughts on it.
+
+### The requirements of the phone? 
+
 You will need a microphone and a speaker on your smartphone. How good the mic has to be? I do not know yet. The speaker is just to tell you the score. 
 
 Alternatively to the speaker you can have a look at the display - but that is not comfortable.
 
-And of course you need a table, a ball and two bats. 
+OS question: It is far away to get the software on a phone. But since it is written in java, Android is the nearest candidate.
 
 ### The requirements of the table? 
 
