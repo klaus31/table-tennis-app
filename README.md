@@ -1,5 +1,7 @@
 # Table Tennis App
 
+**This is just a vision yet!**
+
 Put your smartphone in the middle of a table tennis table (under the net) here:
 
 ```

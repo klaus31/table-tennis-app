@@ -5,9 +5,15 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 
+import tt.analysis.core.SamplesAnalysis;
+import tt.analysis.core.TargetDataLineAnalyser;
+import tt.analysis.pattern.RallyActionsPattern;
+import tt.calibration.Calibrator;
+import tt.calibration.CoreCalibrator;
 import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.is;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -22,8 +28,6 @@ import static org.junit.Assert.assertThat;
  * </pre>
  *
  * XXX explorative testing (no productive code tested yet)
- *
- * thx for part of this file to Radiodef @ http://stackoverflow.com/questions/26574326/how-to-calculate-the-level-amplitude-db-of-audio-signal-in-java
  */
 public class Example1Test extends ExampleTest {
 
@@ -31,11 +35,22 @@ public class Example1Test extends ExampleTest {
   private int countOfRelevantRallyActions = 0;
 
   @Test
+  public void assertCorrectCalibration() throws Exception {
+    TargetDataLineAnalyser analyser = new TargetDataLineAnalyser(getAudioFormat());
+    Calibrator calibrator = new CoreCalibrator(analyser);
+    // TODO strange order:
+    startPlayingTableTennis();
+    calibrator.listen();
+    RallyActionsPattern pattern = calibrator.getRallyActionsPattern();
+    assertNotNull(pattern);
+  }
+
+  @Test
   // I do not think, the correct actions are hit here!
-  public void countActionsUsingPeak() throws Exception {
+  public void assertCorrectCountOfActionsUsingPeak() throws Exception {
     // given
     TargetDataLineAnalyser analyser = new TargetDataLineAnalyser(getAudioFormat());
-    play();
+    startPlayingTableTennis();
     final float LIMIT_PEAK_IS_ACTION = 0.23F; // XXX magic number: to find on calibrate (on warm up) and to make test green!
     // when
     for (SamplesAnalysis analysis; (analysis = analyser.nextAnalysis()) != null;) {
@@ -51,15 +66,15 @@ public class Example1Test extends ExampleTest {
       }
     }
     // then
-    assertThat(countOfRelevantRallyActions, anyOf(is(28), is(29), is(30)));
+    assertThat(countOfRelevantRallyActions + " counted", countOfRelevantRallyActions, anyOf(is(28), is(29), is(30)));
   }
 
   @Test
   // I do not think, the correct actions are hit here!
-  public void countActionsUsingRms() throws Exception {
+  public void assertCorrectCountOfActionsUsingRms() throws Exception {
     // given
     TargetDataLineAnalyser analyser = new TargetDataLineAnalyser(getAudioFormat());
-    play();
+    startPlayingTableTennis();
     final float LIMIT_RMS_IS_ACTION = 0.030F; // XXX magic number: to find on calibrate (on warm up) and to make test green!
     // when
     for (SamplesAnalysis analysis; (analysis = analyser.nextAnalysis()) != null;) {

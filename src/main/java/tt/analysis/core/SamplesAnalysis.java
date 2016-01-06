@@ -1,4 +1,4 @@
-package tt.examples;
+package tt.analysis.core;
 
 public class SamplesAnalysis {
 

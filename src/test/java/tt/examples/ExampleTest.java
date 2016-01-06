@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
+import tt.analysis.core.SamplesAnalysis;
 import static javax.sound.sampled.AudioFormat.Encoding.PCM_SIGNED;
 
 import static org.junit.Assert.assertEquals;
@@ -56,7 +57,7 @@ public abstract class ExampleTest {
 
   abstract String getTestFileName();
 
-  void play() {
+  void startPlayingTableTennis() {
     try {
       AudioStream audioStream = new AudioStream(getInputStream());
       AudioPlayer.player.start(audioStream);

@@ -1,11 +1,14 @@
-package tt.examples;
+package tt.analysis.core;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 
-public class TargetDataLineAnalyser {
+/**
+ * thx for part of this file to Radiodef @ http://stackoverflow.com/questions/26574326/how-to-calculate-the-level-amplitude-db-of-audio-signal-in-java
+ */
+public class TargetDataLineAnalyser implements SamplesAnalyser {
 
   private final int bufferByteSize = 1024;
   private final TargetDataLine line;
