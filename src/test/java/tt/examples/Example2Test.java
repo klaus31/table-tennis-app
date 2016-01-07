@@ -11,7 +11,7 @@ import tt.analysis.MatchAnalyser;
  *
  * An ace (http://tabletennis.about.com/od/glossary/g/ace.htm):<br>
  * <pre>
- * b1 s1 s2
+ * ba sa sb
  * </pre>
  *
  * same shit as example 1, but only the serve (without a touch from the receiver)
@@ -29,7 +29,7 @@ public class Example2Test extends ExampleTest {
     startPlayingTableTennis();
     // then
     // TODO check, if analyser fired rally finished
-    // TODO check, if actions of rally finished are b1 s1 s2
+    // TODO check, if actions of rally finished are ba sa sb
   }
 
   @Override

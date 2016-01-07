@@ -1,9 +1,16 @@
 package tt.analysis.pattern;
 
+import java.util.List;
+
+import tt.analysis.core.Sample;
 import tt.pojo.RallyAction;
 
 /**
  * Pattern representing a {@link RallyAction}
  */
-interface RallyActionPattern {
+public interface RallyActionPattern {
+
+  RallyAction getAction();
+
+  List<Sample> getSamples();
 }

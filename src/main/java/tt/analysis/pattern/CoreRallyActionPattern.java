@@ -1,15 +1,28 @@
 package tt.analysis.pattern;
 
+import java.util.List;
+
+import tt.analysis.core.Sample;
 import tt.pojo.RallyAction;
 
 public class CoreRallyActionPattern implements RallyActionPattern {
 
-  private final byte[] patternBatA;
-  private final RallyAction batA;
+  private final List<Sample> samples;
+  private final RallyAction action;
 
-  public CoreRallyActionPattern(final byte[] patternBatA, final RallyAction batA) {
+  public CoreRallyActionPattern(final List<Sample> patternBatA, final RallyAction action) {
     super();
-    this.patternBatA = patternBatA;
-    this.batA = batA;
+    this.samples = patternBatA;
+    this.action = action;
+  }
+
+  @Override
+  public RallyAction getAction() {
+    return action;
+  }
+
+  @Override
+  public List<Sample> getSamples() {
+    return samples;
   }
 }

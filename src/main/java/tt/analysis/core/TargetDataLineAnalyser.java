@@ -12,7 +12,7 @@ public class TargetDataLineAnalyser implements SamplesAnalyser {
 
   private final int bufferByteSize = 1024;
   private final TargetDataLine line;
-  private final byte[] buf = new byte[bufferByteSize];
+  private final byte[] buffer = new byte[bufferByteSize];
   private int b = 0;
 
   public TargetDataLineAnalyser(final AudioFormat format) throws LineUnavailableException {
@@ -21,43 +21,23 @@ public class TargetDataLineAnalyser implements SamplesAnalyser {
     line.start();
   }
 
-  private float getPeak(final float[] samples) {
-    float peak = 0f;
-    for (float sample : samples) {
-      float abs = Math.abs(sample);
-      if (abs > peak) {
-        peak = abs;
-      }
-    }
-    return peak;
-  }
-
-  /**
-   * @link https://en.wikipedia.org/wiki/Audio_power
-   * @link https://en.wikipedia.org/wiki/Root_mean_square
-   */
-  private float getRms(final float[] samples) {
-    float rms = 0f;
-    for (float sample : samples) {
-      rms += sample * sample;
-    }
-    return (float) Math.sqrt(rms / samples.length);
-  }
-
+  // XXX the very basic all important method of the entire shit and i do not understand it. :D
   private float[] getSamples() {
     float[] samples = new float[bufferByteSize / 2];
     for (int i = 0, s = 0; i < b;) {
       int sample = 0;
-      sample |= buf[i++] & 0xFF;
-      sample |= buf[i++] << 8;
+      sample |= buffer[i++] & 0xFF;
+      sample |= buffer[i++] << 8;
+      // TODO lets work with integer values - we do not need a relation to 0 and 1!
       samples[s++] = sample / 32768f; // XXX magic number
     }
     return samples;
   }
 
-  public SamplesAnalysis nextAnalysis() {
-    if ((b = line.read(buf, 0, buf.length)) > -1) {
-      return new SamplesAnalysis(getRms(getSamples()), getPeak(getSamples()));
+  @Override
+  public Sample nextAnalysis() {
+    if ((b = line.read(buffer, 0, buffer.length)) > -1) {
+      return new Sample(getSamples());
     } else {
       return null;
     }
